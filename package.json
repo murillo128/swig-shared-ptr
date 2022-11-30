@@ -1,0 +1,26 @@
+{
+	"name": "swig-shared-ptr",
+	"version": "1.0.0",
+	"description": "",
+	"scripts": {
+		"configure": "node-gyp configure",
+		"swig": "swig -javascript -node -c++ swig-shared-ptr.i",
+		"build": "swig -javascript -node -c++ swig-shared-ptr.i && node-gyp build --jobs=max",
+		"run": " npm run-script swig && npm run-script build && npm run-script test",
+		"test": "tap test.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/murillo128/swig-shared-ptr.git"
+	},
+	"author": "",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/murillo128/swig-shared-ptr/issues"
+	},
+	"homepage": "https://github.com/murillo128/swig-shared-ptr#readme",
+	"dependencies": {
+		"nan": "^2.17.0",
+		"tap": "^16.3.2"
+	}
+}

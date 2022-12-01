@@ -1365,7 +1365,6 @@ static swig_module_info swig_module = {swig_types, 3, 0, 0, 0, 0};
 
 
 #include <memory>
-
 class Test
 {
 public:
@@ -1376,6 +1375,7 @@ public:
 	}
 	bool boolean;
 	int  integer;
+	int  readonly = 7;
 
 	int one() { return 1;}
 	int inc(int a){ return a++;}
@@ -1471,14 +1471,6 @@ int SWIG_AsVal_int (SWIGV8_VALUE valRef, int* val)
 
 
 SWIGINTERNINLINE
-SWIGV8_VALUE
-SWIG_From_bool  (bool value)
-{
-  return SWIGV8_BOOLEAN_NEW(value);
-}
-
-
-SWIGINTERNINLINE
 SWIGV8_VALUE SWIG_From_int  (int value)
 {
   return SWIGV8_INT32_NEW(value);
@@ -1487,14 +1479,43 @@ SWIGV8_VALUE SWIG_From_int  (int value)
 
 using Test_shared_ptr = std::shared_ptr<Test >;
 
+SWIGINTERN Test_shared_ptr *new_Test_shared_ptr(bool boolean,int integer){
+		return new std::shared_ptr<Test>(new Test(boolean,integer));
+	}
+SWIGINTERN int Test_shared_ptr_one__SWIG(Test_shared_ptr *self){ return (*self)->one();}
+SWIGINTERN int Test_shared_ptr_inc__SWIG(Test_shared_ptr *self,int a){ return (*self)->inc(a);}
+SWIGINTERN int Test_shared_ptr_sum__SWIG(Test_shared_ptr *self,int a,int b){ return (*self)->sum(a,b);}
 
-bool Test_shared_ptr_boolean_get(const std::shared_ptr<Test> ptr) {
-  return ptr->boolean;
+SWIGINTERNINLINE
+SWIGV8_VALUE
+SWIG_From_bool  (bool value)
+{
+  return SWIGV8_BOOLEAN_NEW(value);
 }
 
 
-int Test_shared_ptr_integer_get(const std::shared_ptr<Test> ptr) {
-  return ptr->integer;
+int Test_shared_ptr_readonly_get(std::shared_ptr<Test>* ptr) {
+  return (*ptr)->readonly;
+}
+
+
+bool Test_shared_ptr_boolean_get(std::shared_ptr<Test>* ptr) {
+  return (*ptr)->boolean;
+}
+
+
+void  Test_shared_ptr_boolean_set(std::shared_ptr<Test>* ptr, bool val ) {
+  (*ptr)->boolean = val  ;
+}
+
+
+int Test_shared_ptr_integer_get(std::shared_ptr<Test>* ptr) {
+  return (*ptr)->integer;
+}
+
+
+void  Test_shared_ptr_integer_set(std::shared_ptr<Test>* ptr, int val ) {
+  (*ptr)->integer = val  ;
 }
 
 
@@ -1540,118 +1561,6 @@ static SwigV8ReturnValue _wrap_new_Test(const SwigV8Arguments &args) {
   goto fail;
 fail:
   SWIGV8_RETURN(SWIGV8_UNDEFINED());
-}
-
-
-static void _wrap_Test_boolean_set(v8::Local<v8::Name> property, v8::Local<v8::Value> value, const SwigV8PropertyCallbackInfoVoid &info) {
-  SWIGV8_HANDLESCOPE();
-  
-  Test *arg1 = (Test *) 0 ;
-  bool arg2 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  bool val2 ;
-  int ecode2 = 0 ;
-  
-  res1 = SWIG_ConvertPtr(info.Holder(), &argp1,SWIGTYPE_p_Test, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Test_boolean_set" "', argument " "1"" of type '" "Test *""'"); 
-  }
-  arg1 = reinterpret_cast< Test * >(argp1);
-  ecode2 = SWIG_AsVal_bool(value, &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Test_boolean_set" "', argument " "2"" of type '" "bool""'");
-  } 
-  arg2 = static_cast< bool >(val2);
-  if (arg1) (arg1)->boolean = arg2;
-  
-  
-  
-  goto fail;
-fail:
-  return;
-}
-
-
-static SwigV8ReturnValue _wrap_Test_boolean_get(v8::Local<v8::Name> property, const SwigV8PropertyCallbackInfo &info) {
-  SWIGV8_HANDLESCOPE();
-  
-  SWIGV8_VALUE jsresult;
-  Test *arg1 = (Test *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  bool result;
-  
-  res1 = SWIG_ConvertPtr(info.Holder(), &argp1,SWIGTYPE_p_Test, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Test_boolean_get" "', argument " "1"" of type '" "Test *""'"); 
-  }
-  arg1 = reinterpret_cast< Test * >(argp1);
-  result = (bool) ((arg1)->boolean);
-  jsresult = SWIG_From_bool(static_cast< bool >(result));
-  
-  
-  SWIGV8_RETURN_INFO(jsresult, info);
-  
-  goto fail;
-fail:
-  SWIGV8_RETURN_INFO(SWIGV8_UNDEFINED(), info);
-}
-
-
-static void _wrap_Test_integer_set(v8::Local<v8::Name> property, v8::Local<v8::Value> value, const SwigV8PropertyCallbackInfoVoid &info) {
-  SWIGV8_HANDLESCOPE();
-  
-  Test *arg1 = (Test *) 0 ;
-  int arg2 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  int val2 ;
-  int ecode2 = 0 ;
-  
-  res1 = SWIG_ConvertPtr(info.Holder(), &argp1,SWIGTYPE_p_Test, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Test_integer_set" "', argument " "1"" of type '" "Test *""'"); 
-  }
-  arg1 = reinterpret_cast< Test * >(argp1);
-  ecode2 = SWIG_AsVal_int(value, &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Test_integer_set" "', argument " "2"" of type '" "int""'");
-  } 
-  arg2 = static_cast< int >(val2);
-  if (arg1) (arg1)->integer = arg2;
-  
-  
-  
-  goto fail;
-fail:
-  return;
-}
-
-
-static SwigV8ReturnValue _wrap_Test_integer_get(v8::Local<v8::Name> property, const SwigV8PropertyCallbackInfo &info) {
-  SWIGV8_HANDLESCOPE();
-  
-  SWIGV8_VALUE jsresult;
-  Test *arg1 = (Test *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  int result;
-  
-  res1 = SWIG_ConvertPtr(info.Holder(), &argp1,SWIGTYPE_p_Test, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Test_integer_get" "', argument " "1"" of type '" "Test *""'"); 
-  }
-  arg1 = reinterpret_cast< Test * >(argp1);
-  result = (int) ((arg1)->integer);
-  jsresult = SWIG_From_int(static_cast< int >(result));
-  
-  
-  SWIGV8_RETURN_INFO(jsresult, info);
-  
-  goto fail;
-fail:
-  SWIGV8_RETURN_INFO(SWIGV8_UNDEFINED(), info);
 }
 
 
@@ -1781,18 +1690,27 @@ static SwigV8ReturnValue _wrap_new_Test_shared_ptr(const SwigV8Arguments &args) 
   SWIGV8_HANDLESCOPE();
   
   SWIGV8_OBJECT self = args.Holder();
-  Test *arg1 = (Test *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
+  bool arg1 ;
+  int arg2 ;
+  bool val1 ;
+  int ecode1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
   Test_shared_ptr *result;
   if(self->InternalFieldCount() < 1) SWIG_exception_fail(SWIG_ERROR, "Illegal call of constructor _wrap_new_Test_shared_ptr.");
-  if(args.Length() != 1) SWIG_exception_fail(SWIG_ERROR, "Illegal number of arguments for _wrap_new_Test_shared_ptr.");
-  res1 = SWIG_ConvertPtr(args[0], &argp1,SWIGTYPE_p_Test, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_Test_shared_ptr" "', argument " "1"" of type '" "Test *""'"); 
-  }
-  arg1 = reinterpret_cast< Test * >(argp1);
-  result = (Test_shared_ptr *)new Test_shared_ptr(arg1);
+  if(args.Length() != 2) SWIG_exception_fail(SWIG_ERROR, "Illegal number of arguments for _wrap_new_Test_shared_ptr.");
+  ecode1 = SWIG_AsVal_bool(args[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_Test_shared_ptr" "', argument " "1"" of type '" "bool""'");
+  } 
+  arg1 = static_cast< bool >(val1);
+  ecode2 = SWIG_AsVal_int(args[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "new_Test_shared_ptr" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  result = (Test_shared_ptr *)new_Test_shared_ptr(arg1,arg2);
+  
   
   
   
@@ -1806,6 +1724,255 @@ fail:
 }
 
 
+static SwigV8ReturnValue _wrap_Test_shared_ptr_one(const SwigV8Arguments &args) {
+  SWIGV8_HANDLESCOPE();
+  
+  SWIGV8_VALUE jsresult;
+  Test_shared_ptr *arg1 = (Test_shared_ptr *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int result;
+  
+  if(args.Length() != 0) SWIG_exception_fail(SWIG_ERROR, "Illegal number of arguments for _wrap_Test_shared_ptr_one.");
+  
+  res1 = SWIG_ConvertPtr(args.Holder(), &argp1,SWIGTYPE_p_std__shared_ptrT_Test_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Test_shared_ptr_one" "', argument " "1"" of type '" "Test_shared_ptr *""'"); 
+  }
+  arg1 = reinterpret_cast< Test_shared_ptr * >(argp1);
+  result = (int)Test_shared_ptr_one__SWIG(arg1);
+  jsresult = SWIG_From_int(static_cast< int >(result));
+  
+  
+  SWIGV8_RETURN(jsresult);
+  
+  goto fail;
+fail:
+  SWIGV8_RETURN(SWIGV8_UNDEFINED());
+}
+
+
+static SwigV8ReturnValue _wrap_Test_shared_ptr_inc(const SwigV8Arguments &args) {
+  SWIGV8_HANDLESCOPE();
+  
+  SWIGV8_VALUE jsresult;
+  Test_shared_ptr *arg1 = (Test_shared_ptr *) 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  int result;
+  
+  if(args.Length() != 1) SWIG_exception_fail(SWIG_ERROR, "Illegal number of arguments for _wrap_Test_shared_ptr_inc.");
+  
+  res1 = SWIG_ConvertPtr(args.Holder(), &argp1,SWIGTYPE_p_std__shared_ptrT_Test_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Test_shared_ptr_inc" "', argument " "1"" of type '" "Test_shared_ptr *""'"); 
+  }
+  arg1 = reinterpret_cast< Test_shared_ptr * >(argp1);
+  ecode2 = SWIG_AsVal_int(args[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Test_shared_ptr_inc" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  result = (int)Test_shared_ptr_inc__SWIG(arg1,arg2);
+  jsresult = SWIG_From_int(static_cast< int >(result));
+  
+  
+  
+  SWIGV8_RETURN(jsresult);
+  
+  goto fail;
+fail:
+  SWIGV8_RETURN(SWIGV8_UNDEFINED());
+}
+
+
+static SwigV8ReturnValue _wrap_Test_shared_ptr_sum(const SwigV8Arguments &args) {
+  SWIGV8_HANDLESCOPE();
+  
+  SWIGV8_VALUE jsresult;
+  Test_shared_ptr *arg1 = (Test_shared_ptr *) 0 ;
+  int arg2 ;
+  int arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  int result;
+  
+  if(args.Length() != 2) SWIG_exception_fail(SWIG_ERROR, "Illegal number of arguments for _wrap_Test_shared_ptr_sum.");
+  
+  res1 = SWIG_ConvertPtr(args.Holder(), &argp1,SWIGTYPE_p_std__shared_ptrT_Test_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Test_shared_ptr_sum" "', argument " "1"" of type '" "Test_shared_ptr *""'"); 
+  }
+  arg1 = reinterpret_cast< Test_shared_ptr * >(argp1);
+  ecode2 = SWIG_AsVal_int(args[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Test_shared_ptr_sum" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  ecode3 = SWIG_AsVal_int(args[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Test_shared_ptr_sum" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = static_cast< int >(val3);
+  result = (int)Test_shared_ptr_sum__SWIG(arg1,arg2,arg3);
+  jsresult = SWIG_From_int(static_cast< int >(result));
+  
+  
+  
+  
+  SWIGV8_RETURN(jsresult);
+  
+  goto fail;
+fail:
+  SWIGV8_RETURN(SWIGV8_UNDEFINED());
+}
+
+
+static SwigV8ReturnValue _wrap_Test_shared_ptr_readonly_get(v8::Local<v8::Name> property, const SwigV8PropertyCallbackInfo &info) {
+  SWIGV8_HANDLESCOPE();
+  
+  SWIGV8_VALUE jsresult;
+  Test_shared_ptr *arg1 = (Test_shared_ptr *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int result;
+  
+  res1 = SWIG_ConvertPtr(info.Holder(), &argp1,SWIGTYPE_p_std__shared_ptrT_Test_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Test_shared_ptr_readonly_get" "', argument " "1"" of type '" "Test_shared_ptr *""'"); 
+  }
+  arg1 = reinterpret_cast< Test_shared_ptr * >(argp1);
+  result = (int)Test_shared_ptr_readonly_get(arg1);
+  jsresult = SWIG_From_int(static_cast< int >(result));
+  
+  
+  SWIGV8_RETURN_INFO(jsresult, info);
+  
+  goto fail;
+fail:
+  SWIGV8_RETURN_INFO(SWIGV8_UNDEFINED(), info);
+}
+
+
+static void _wrap_Test_shared_ptr_boolean_set(v8::Local<v8::Name> property, v8::Local<v8::Value> value, const SwigV8PropertyCallbackInfoVoid &info) {
+  SWIGV8_HANDLESCOPE();
+  
+  Test_shared_ptr *arg1 = (Test_shared_ptr *) 0 ;
+  bool arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool val2 ;
+  int ecode2 = 0 ;
+  
+  res1 = SWIG_ConvertPtr(info.Holder(), &argp1,SWIGTYPE_p_std__shared_ptrT_Test_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Test_shared_ptr_boolean_set" "', argument " "1"" of type '" "Test_shared_ptr *""'"); 
+  }
+  arg1 = reinterpret_cast< Test_shared_ptr * >(argp1);
+  ecode2 = SWIG_AsVal_bool(value, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Test_shared_ptr_boolean_set" "', argument " "2"" of type '" "bool""'");
+  } 
+  arg2 = static_cast< bool >(val2);
+  Test_shared_ptr_boolean_set(arg1,arg2);
+  
+  
+  
+  goto fail;
+fail:
+  return;
+}
+
+
+static SwigV8ReturnValue _wrap_Test_shared_ptr_boolean_get(v8::Local<v8::Name> property, const SwigV8PropertyCallbackInfo &info) {
+  SWIGV8_HANDLESCOPE();
+  
+  SWIGV8_VALUE jsresult;
+  Test_shared_ptr *arg1 = (Test_shared_ptr *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool result;
+  
+  res1 = SWIG_ConvertPtr(info.Holder(), &argp1,SWIGTYPE_p_std__shared_ptrT_Test_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Test_shared_ptr_boolean_get" "', argument " "1"" of type '" "Test_shared_ptr *""'"); 
+  }
+  arg1 = reinterpret_cast< Test_shared_ptr * >(argp1);
+  result = (bool)Test_shared_ptr_boolean_get(arg1);
+  jsresult = SWIG_From_bool(static_cast< bool >(result));
+  
+  
+  SWIGV8_RETURN_INFO(jsresult, info);
+  
+  goto fail;
+fail:
+  SWIGV8_RETURN_INFO(SWIGV8_UNDEFINED(), info);
+}
+
+
+static void _wrap_Test_shared_ptr_integer_set(v8::Local<v8::Name> property, v8::Local<v8::Value> value, const SwigV8PropertyCallbackInfoVoid &info) {
+  SWIGV8_HANDLESCOPE();
+  
+  Test_shared_ptr *arg1 = (Test_shared_ptr *) 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  
+  res1 = SWIG_ConvertPtr(info.Holder(), &argp1,SWIGTYPE_p_std__shared_ptrT_Test_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Test_shared_ptr_integer_set" "', argument " "1"" of type '" "Test_shared_ptr *""'"); 
+  }
+  arg1 = reinterpret_cast< Test_shared_ptr * >(argp1);
+  ecode2 = SWIG_AsVal_int(value, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Test_shared_ptr_integer_set" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  Test_shared_ptr_integer_set(arg1,arg2);
+  
+  
+  
+  goto fail;
+fail:
+  return;
+}
+
+
+static SwigV8ReturnValue _wrap_Test_shared_ptr_integer_get(v8::Local<v8::Name> property, const SwigV8PropertyCallbackInfo &info) {
+  SWIGV8_HANDLESCOPE();
+  
+  SWIGV8_VALUE jsresult;
+  Test_shared_ptr *arg1 = (Test_shared_ptr *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int result;
+  
+  res1 = SWIG_ConvertPtr(info.Holder(), &argp1,SWIGTYPE_p_std__shared_ptrT_Test_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Test_shared_ptr_integer_get" "', argument " "1"" of type '" "Test_shared_ptr *""'"); 
+  }
+  arg1 = reinterpret_cast< Test_shared_ptr * >(argp1);
+  result = (int)Test_shared_ptr_integer_get(arg1);
+  jsresult = SWIG_From_int(static_cast< int >(result));
+  
+  
+  SWIGV8_RETURN_INFO(jsresult, info);
+  
+  goto fail;
+fail:
+  SWIGV8_RETURN_INFO(SWIGV8_UNDEFINED(), info);
+}
+
+
 static void _wrap_delete_Test_shared_ptr(const v8::WeakCallbackInfo<SWIGV8_Proxy> &data) {
   SWIGV8_Proxy *proxy = data.GetParameter();
   
@@ -1814,72 +1981,6 @@ static void _wrap_delete_Test_shared_ptr(const v8::WeakCallbackInfo<SWIGV8_Proxy
     delete arg1;
   }
   delete proxy;
-}
-
-
-static SwigV8ReturnValue _wrap_Test_shared_ptr_boolean_get(const SwigV8Arguments &args) {
-  SWIGV8_HANDLESCOPE();
-  
-  SWIGV8_VALUE jsresult;
-  SwigValueWrapper< std::shared_ptr< Test > > arg1 ;
-  void *argp1 ;
-  int res1 = 0 ;
-  bool result;
-  
-  if(args.Length() != 1) SWIG_exception_fail(SWIG_ERROR, "Illegal number of arguments for _wrap_Test_shared_ptr_boolean_get.");
-  
-  {
-    res1 = SWIG_ConvertPtr(args[0], &argp1, SWIGTYPE_p_std__shared_ptrT_Test_t,  0 );
-    if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Test_shared_ptr_boolean_get" "', argument " "1"" of type '" "std::shared_ptr< Test > const""'"); 
-    }  
-    if (!argp1) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Test_shared_ptr_boolean_get" "', argument " "1"" of type '" "std::shared_ptr< Test > const""'");
-    } else {
-      arg1 = *(reinterpret_cast< std::shared_ptr< Test > * >(argp1));
-    }
-  }
-  result = (bool)Test_shared_ptr_boolean_get(arg1);
-  jsresult = SWIG_From_bool(static_cast< bool >(result));
-  
-  SWIGV8_RETURN(jsresult);
-  
-  goto fail;
-fail:
-  SWIGV8_RETURN(SWIGV8_UNDEFINED());
-}
-
-
-static SwigV8ReturnValue _wrap_Test_shared_ptr_integer_get(const SwigV8Arguments &args) {
-  SWIGV8_HANDLESCOPE();
-  
-  SWIGV8_VALUE jsresult;
-  SwigValueWrapper< std::shared_ptr< Test > > arg1 ;
-  void *argp1 ;
-  int res1 = 0 ;
-  int result;
-  
-  if(args.Length() != 1) SWIG_exception_fail(SWIG_ERROR, "Illegal number of arguments for _wrap_Test_shared_ptr_integer_get.");
-  
-  {
-    res1 = SWIG_ConvertPtr(args[0], &argp1, SWIGTYPE_p_std__shared_ptrT_Test_t,  0 );
-    if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Test_shared_ptr_integer_get" "', argument " "1"" of type '" "std::shared_ptr< Test > const""'"); 
-    }  
-    if (!argp1) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Test_shared_ptr_integer_get" "', argument " "1"" of type '" "std::shared_ptr< Test > const""'");
-    } else {
-      arg1 = *(reinterpret_cast< std::shared_ptr< Test > * >(argp1));
-    }
-  }
-  result = (int)Test_shared_ptr_integer_get(arg1);
-  jsresult = SWIG_From_int(static_cast< int >(result));
-  
-  SWIGV8_RETURN(jsresult);
-  
-  goto fail;
-fail:
-  SWIGV8_RETURN(SWIGV8_UNDEFINED());
 }
 
 
@@ -2229,11 +2330,15 @@ if (SWIGTYPE_p_std__shared_ptrT_Test_t->clientdata == 0) {
 
 
   /* register wrapper functions */
-  SWIGV8_AddMemberVariable(_exports_Test_class, "boolean", _wrap_Test_boolean_get, _wrap_Test_boolean_set);
-SWIGV8_AddMemberVariable(_exports_Test_class, "integer", _wrap_Test_integer_get, _wrap_Test_integer_set);
-SWIGV8_AddMemberFunction(_exports_Test_class, "one", _wrap_Test_one);
+  SWIGV8_AddMemberFunction(_exports_Test_class, "one", _wrap_Test_one);
 SWIGV8_AddMemberFunction(_exports_Test_class, "inc", _wrap_Test_inc);
 SWIGV8_AddMemberFunction(_exports_Test_class, "sum", _wrap_Test_sum);
+SWIGV8_AddMemberFunction(_exports_Test_shared_ptr_class, "one", _wrap_Test_shared_ptr_one);
+SWIGV8_AddMemberFunction(_exports_Test_shared_ptr_class, "inc", _wrap_Test_shared_ptr_inc);
+SWIGV8_AddMemberFunction(_exports_Test_shared_ptr_class, "sum", _wrap_Test_shared_ptr_sum);
+SWIGV8_AddMemberVariable(_exports_Test_shared_ptr_class, "readonly", _wrap_Test_shared_ptr_readonly_get, JS_veto_set_variable);
+SWIGV8_AddMemberVariable(_exports_Test_shared_ptr_class, "boolean", _wrap_Test_shared_ptr_boolean_get, _wrap_Test_shared_ptr_boolean_set);
+SWIGV8_AddMemberVariable(_exports_Test_shared_ptr_class, "integer", _wrap_Test_shared_ptr_integer_get, _wrap_Test_shared_ptr_integer_set);
 
 
   /* setup inheritances */
@@ -2263,9 +2368,7 @@ v8::Local<v8::Object> _exports_Test_shared_ptr_obj = _exports_Test_shared_ptr_cl
 
 
   /* add static class functions and variables */
-  SWIGV8_AddStaticFunction(exports_obj, "Test_shared_ptr_boolean_get", _wrap_Test_shared_ptr_boolean_get, context);
-SWIGV8_AddStaticFunction(exports_obj, "Test_shared_ptr_integer_get", _wrap_Test_shared_ptr_integer_get, context);
-
+  
 
   /* register classes */
   SWIGV8_MAYBE_CHECK(exports_obj->Set(context, SWIGV8_SYMBOL_NEW("Test"), _exports_Test_obj));

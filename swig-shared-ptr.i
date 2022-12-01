@@ -4,7 +4,6 @@
 
 %{
 #include <memory>
-
 class Test
 {
 public:
@@ -15,6 +14,7 @@ public:
 	}
 	bool boolean;
 	int  integer;
+	int  readonly = 7;
 
 	int one() { return 1;}
 	int inc(int a){ return a++;}
@@ -25,17 +25,23 @@ public:
 
 %}
 
-class Test
+SHARED_PTR_BEGIN(Test)
 {
-public:
-	Test(bool boolean,int integer);
-	bool boolean;
-	int  integer;
-	int one();
-	int inc(int a);
-	int sum(int a,int b);
-};
+	Test_shared_ptr(bool boolean,int integer) 
+	{
+		return new std::shared_ptr<Test>(new Test(boolean,integer));
+	}
+	int one()		{ return (*self)->one();}
+	int inc(int a)		{ return (*self)->inc(a);}
+	int sum(int a,int b)	{ return (*self)->sum(a,b);}
 
-SHARED_PTR(Test)
-SHARED_PTR_ATTR_GETTER(Test,boolean,bool)
-SHARED_PTR_ATTR_GETTER(Test,integer,int)
+}
+SHARED_PTR_END()
+
+SHARED_PTR_ATTR_RO(Test,readonly,int)
+SHARED_PTR_ATTR(Test,boolean,bool)
+SHARED_PTR_ATTR(Test,integer,int)
+
+
+
+

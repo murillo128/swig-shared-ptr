@@ -5,7 +5,7 @@
 	"scripts": {
 		"configure": "node-gyp configure",
 		"swig": "swig -javascript -node -c++ swig-shared-ptr.i",
-		"build": "swig -javascript -node -c++ swig-shared-ptr.i && node-gyp build --jobs=max",
+		"build": "node-gyp build --jobs=max",
 		"run": " npm run-script swig && npm run-script build && npm run-script test",
 		"test": "tap test.js"
 	},

@@ -3,15 +3,25 @@
 using T ## _shared_ptr = std::shared_ptr< ## T >;
 %}
 %nodefaultctor T ## _shared_ptr;
-struct T ## _shared_ptr
+struct T ## _shared_ptr : T
 {
 %extend 
 %enddef
 
-%define SHARED_PTR_END()
+%define SHARED_PTR_END(T)
+T* get();
 };
 %enddef
 
+%define SHARED_PTR_TO(B)
+B ## _shared_ptr to##B()
+{
+	return std::static_pointer_cast<B>(*self);
+}
+%enddef
+
+
+////////////////Unused
 
 
 %define SHARED_PTR_ATTR_GETTER(T, name, type)
@@ -50,3 +60,14 @@ SHARED_PTR_ATTR_SETTER(T, name, type)
 }
 SHARED_PTR_ATTR_GETTER(T, name, type)
 %enddef
+
+/*
+%define SHARED_PTR_TO(T,B)
+%extend  T ## _shared_ptr
+{
+	B ## _shared_ptr to##B()
+	{
+		return std::static_pointer_cast<B>(*self);
+	}
+}*/
+

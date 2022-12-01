@@ -7,7 +7,7 @@ console.log(Native.Test_shared_ptr)
 tap.test("shared_ptr",function(suite){
 	
 	suite.test("constructor",async function(test){
-		const shared = SharedPointer(Native.Test_shared_ptr)(true,5);
+		const shared = SharedPointer(new Native.Test_shared_ptr(true,5));
 
 		console.log("boolean" in shared)
 		console.log(typeof shared.inc == "function")
@@ -17,14 +17,14 @@ tap.test("shared_ptr",function(suite){
 	});
 
 	suite.test("set",async function(test){
-		const shared = SharedPointer(Native.Test_shared_ptr)(true,5);
+		const shared = SharedPointer(new Native.Test_shared_ptr(true,5));
 		shared.boolean = false;
 		test.same(false,shared.boolean);
 		test.end();
 	});
 
 	suite.test("set and get",async function(test){
-		const shared = SharedPointer(Native.Test_shared_ptr)(true,5);
+		const shared = SharedPointer(new Native.Test_shared_ptr(true,5));
 		for (let i = 0; i<200;++i)
 		{
 			shared.integer = i;
@@ -34,7 +34,7 @@ tap.test("shared_ptr",function(suite){
 	});
 
 	suite.test("base",async function(test){
-		const shared = SharedPointer(Native.Test_shared_ptr)(true,5);
+		const shared = SharedPointer(new Native.Test_shared_ptr(true,5));
 		test.same(3, shared.base);
 		const base = shared.toBase();
 		test.ok(shared.CheckShared(base[SharedPointer.Target]));
@@ -44,7 +44,7 @@ tap.test("shared_ptr",function(suite){
 	});
 
 	suite.test("readonly",async function(test){
-		const shared = SharedPointer(Native.Test_shared_ptr)(true,5);
+		const shared = SharedPointer(new Native.Test_shared_ptr(true,5));
 		test.same(7,shared.readonly);
 		try {
 			shared.readonly = 1;

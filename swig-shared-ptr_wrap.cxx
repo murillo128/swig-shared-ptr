@@ -1394,9 +1394,7 @@ public:
 	int one() { return 1;}
 	int inc(int a){ return a++;}
 	int sum(int a,int b){ return a+b;}
-
 };
-
 
 
 
@@ -1427,7 +1425,7 @@ SWIG_From_bool  (bool value)
 }
 
 
-using Base_shared_ptr = std::shared_ptr<Base >;
+using Base_shared_ptr = std::shared_ptr<Base>;
 
 
 SWIGINTERN
@@ -1502,7 +1500,7 @@ int SWIG_AsVal_bool (SWIGV8_VALUE obj, bool *val)
 }
 
 
-using Test_shared_ptr = std::shared_ptr<Test >;
+using Test_shared_ptr = std::shared_ptr<Test>;
 
 SWIGINTERN Test_shared_ptr *new_Test_shared_ptr(bool boolean,int integer){
 		return new std::shared_ptr<Test>(new Test(boolean,integer));
@@ -1654,7 +1652,7 @@ static SwigV8ReturnValue _wrap_Base_shared_ptr_get(const SwigV8Arguments &args) 
   Base_shared_ptr *arg1 = (Base_shared_ptr *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  Test *result = 0 ;
+  Base *result = 0 ;
   
   if(args.Length() != 0) SWIG_exception_fail(SWIG_ERROR, "Illegal number of arguments for _wrap_Base_shared_ptr_get.");
   
@@ -1663,8 +1661,8 @@ static SwigV8ReturnValue _wrap_Base_shared_ptr_get(const SwigV8Arguments &args) 
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Base_shared_ptr_get" "', argument " "1"" of type '" "Base_shared_ptr *""'"); 
   }
   arg1 = reinterpret_cast< Base_shared_ptr * >(argp1);
-  result = (Test *)(arg1)->get();
-  jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_Test, 0 |  0 );
+  result = (Base *)(arg1)->get();
+  jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_Base, 0 |  0 );
   
   
   SWIGV8_RETURN(jsresult);

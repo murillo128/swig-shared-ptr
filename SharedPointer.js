@@ -4,7 +4,7 @@ function wrap(func)
 	{
 		const ret = func(...args);
 		if (typeof ret === "object" && ret.constructor.name.match(/_exports_(.*)_shared_ptr/))
-			return new Proxy(ret, handler);
+			return SharedPointer(ret);
 		return ret;
 	}
 }
@@ -26,10 +26,9 @@ const handler = {
 	}
 };
 
-function SharedPointer(constructor){
-	return function(...args) {
-		return new Proxy(new constructor(...args), handler);
-	}
+function SharedPointer(obj)
+{
+	return new Proxy(obj, handler);
 };
 
 SharedPointer.Target = Symbol("target");

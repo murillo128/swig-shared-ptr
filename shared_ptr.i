@@ -1,3 +1,4 @@
+
 %define SHARED_PTR_BEGIN(T)
 %inline %{
 using T ## _shared_ptr = std::shared_ptr< ## T >;
@@ -18,6 +19,12 @@ B ## _shared_ptr to##B()
 {
 	return std::static_pointer_cast<B>(*self);
 }
+%enddef
+
+
+%define SHARED_PTR(T)
+SHARED_PTR_BEGIN(T)
+SHARED_PTR_END(T)
 %enddef
 
 
@@ -61,13 +68,4 @@ SHARED_PTR_ATTR_SETTER(T, name, type)
 SHARED_PTR_ATTR_GETTER(T, name, type)
 %enddef
 
-/*
-%define SHARED_PTR_TO(T,B)
-%extend  T ## _shared_ptr
-{
-	B ## _shared_ptr to##B()
-	{
-		return std::static_pointer_cast<B>(*self);
-	}
-}*/
 

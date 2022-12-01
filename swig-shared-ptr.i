@@ -31,9 +31,7 @@ public:
 	int one() { return 1;}
 	int inc(int a){ return a++;}
 	int sum(int a,int b){ return a+b;}
-
 };
-
 
 %}
 
@@ -44,11 +42,8 @@ public:
 	int  base = 3;
 	bool CheckShared(const std::shared_ptr<Base>& shared);
 };
+SHARED_PTR(Base)
 
-SHARED_PTR_BEGIN(Base)
-{
-}
-SHARED_PTR_END(Test)
 
 class Test : public Base
 {

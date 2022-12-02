@@ -1,11 +1,14 @@
+function proxy(ret)
+{
+	if (typeof ret === "object" && ret.constructor.name.match(/_exports_(.*)_shared_ptr/))
+		return SharedPointer(ret);
+	return ret;
+}
 function wrap(func)
 {
 	return function(...args)
 	{
-		const ret = func(...args);
-		if (typeof ret === "object" && ret.constructor.name.match(/_exports_(.*)_shared_ptr/))
-			return SharedPointer(ret);
-		return ret;
+		return proxy(func(...args))
 	}
 }
 
@@ -19,16 +22,29 @@ const handler = {
 			return wrap(ptr[prop].bind(ptr));
 		if (prop===SharedPointer.Target)
 			return shared;
-		return ptr[prop];
+		return proxy(ptr[prop]);
 	},
 	set(shared, prop, value) {
 		shared.get()[prop] = value;
 	}
 };
 
+//Cache for alreay created proxies
+const cache = new WeakMap();
+
 function SharedPointer(obj)
 {
-	return new Proxy(obj, handler);
+	//If we already have a proxy for that object
+	if (cache.has(obj))
+		//Return 
+		return cache.get(obj)
+	//Create new proxy
+	const proxy  = new Proxy(obj, handler);
+	//Set it on cache
+	cache.set(obj,proxy);
+	//Return proxy
+	return proxy;
+
 };
 
 SharedPointer.Target = Symbol("target");

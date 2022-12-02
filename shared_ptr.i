@@ -4,7 +4,7 @@
 using T ## _shared_ptr = std::shared_ptr<T>;
 %}
 %nodefaultctor T ## _shared_ptr;
-struct T ## _shared_ptr : T
+struct T ## _shared_ptr
 {
 %extend 
 %enddef

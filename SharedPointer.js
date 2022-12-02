@@ -1,53 +1,61 @@
-function proxy(ret)
+function proxy(ret,cache)
 {
 	if (typeof ret === "object" && ret.constructor.name.match(/_exports_(.*)_shared_ptr/))
-		return SharedPointer(ret);
+		return SharedPointer(ret,cache);
 	return ret;
 }
-function wrap(func)
+function wrap(func,cache)
 {
 	return function(...args)
 	{
-		return proxy(func(...args))
+		return proxy(func(...args),cache)
 	}
 }
 
-const handler = {
+class Handler
+{
+	constructor(cache)
+	{
+		//Cache for alreay created proxies
+		this.cache = cache ? cache : new WeakMap();
+	}
 	get(shared, prop)
 	{
 		if (typeof shared[prop] == "function")
-			return wrap(shared[prop].bind(shared));
+			return wrap(shared[prop].bind(shared),this.cache);
 		const ptr = shared.get();
 		if (typeof ptr[prop] == "function")
-			return wrap(ptr[prop].bind(ptr));
+			return wrap(ptr[prop].bind(ptr),this.cache);
 		if (prop===SharedPointer.Target)
 			return shared;
-		return proxy(ptr[prop]);
-	},
+		if (prop===SharedPointer.Pointer)
+			return ptr;
+		return proxy(ptr[prop],this.cache);
+	}
 	set(shared, prop, value) {
 		shared.get()[prop] = value;
 	}
 };
 
-//Cache for alreay created proxies
-const cache = new WeakMap();
 
-function SharedPointer(obj)
+
+function SharedPointer(obj, cache)
 {
 	//If we already have a proxy for that object
-	if (cache.has(obj))
+	if (cache && cache.has(obj))
 		//Return 
 		return cache.get(obj)
 	//Create new proxy
-	const proxy  = new Proxy(obj, handler);
+	const proxy  = new Proxy(obj, new Handler());
 	//Set it on cache
-	cache.set(obj,proxy);
+	if (cache) cache.set(obj,proxy);
 	//Return proxy
 	return proxy;
 
 };
 
 SharedPointer.Target = Symbol("target");
+SharedPointer.Pointer = Symbol("pointer");
 
 module.exports = SharedPointer;
 
